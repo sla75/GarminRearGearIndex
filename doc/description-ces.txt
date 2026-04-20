@@ -2,4 +2,6 @@ SlavicsRearGearIndexSimple
 Zobrazení aktuálního zařazeného pastorku na zadní přehazovačce. Index přehazovačky se bere z univerzálně z AntPlus (Di2, SRAM AXS,...). Aplikace je nezávislá na počtu pastorků.
 Lokalizace EN, DE, CZ, PL, SK, IT, FR, HU.
 Pokud je chybný překlad, omluvte mě a prosím kontaktujte mě se správným výrazem (V anglickém nebo českém jazyce). Děkuji Petr
-V plánu je doplnit ikonu řazení a status baterií.
+
+sla75@seznam.cz
+https://github.com/sla75/SlavicsRearGearIndexSimple/issues

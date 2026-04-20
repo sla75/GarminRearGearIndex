@@ -26,7 +26,7 @@ echo_and_exec java -Xms1g -"Dfile.encoding=UTF-8" -"Dapple.awt.UIElement=true"  
 echo -e "Generated bin/${PROJECT_NAME}Test.iq"
 
 DEVICE=${1:-edge1050}
-OUTPUT_FILE="bin/${PROJECT_NAME}_${DEVICE}.prq"
+OUTPUT_FILE="bin/${PROJECT_NAME}_${DEVICE}.prg"
 
 #if [[ $1 == "" ]]; then
 #    >&2 echo Usage: ciq-release.sh [device]
@@ -56,6 +56,9 @@ echo_and_exec "${SDK}"bin/monkeyc \
     # --debug-log-output logs/monkeyc.zip --debug-log-level 3 
 # echo_and_exec "${SDK}"/bin/monkeydo "${OUTPUT_FILE}" ${DEVICE}
 echo -e "Generated ${OUTPUT_FILE}"
+
+mtp-detect | grep "Model: Edge 1050"
+echo "Status=$?"
 
 exit 0
 
