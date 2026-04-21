@@ -12,22 +12,42 @@ SDK="$(cat "${HOME}/.Garmin/ConnectIQ/current-sdk.cfg")"
 
 PROJECT_FOLDER=${PWD}
 PROJECT_NAME=$(basename "${PROJECT_FOLDER}")
+PROJECT_NAME="RearGearIndex"
+SYSTEM="Test"
 
 # Branch name
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
+[[ "${BRANCH}" == "main" ]] && SYSTEM="";
 
-echo -e "\nGenerate ${PROJECT_NAME}_TEST..."
+#BUILD=$(git rev-list --count --all)
+BUILD=$(git rev-list HEAD --count)
+
+VERSION=$(xmllint --xpath "//strings/string[@id='version']/text()" resources/strings/strings.xml)
+echo "1. Version=${VERSION}"
+OLDBUILD="${VERSION##*.}"
+VERSION=${VERSION%.*}
+echo "2. Version=${VERSION}"
+VERSION=${VERSION}.${BUILD}
+echo "3. Version=${VERSION}"
+
+if[[ ${BUILD} -ne ${OLDBUILD} ]]; then
+    #xml=$(echo -e "cd /studentFile/student[studentName='CLASSA']/studentActions/studentAction[studentType='Juniour']/studentStatus\nset failed\nsave -" | xmllint --shell <(echo "$xml"))
+fi;
+
+exit 0
+
+echo -e "\nGenerate ${PROJECT_NAME}${SYSTEM}.${BUILD}..."
 DEV_KEY="${HOME}/.Garmin/ConnectIQ/keys/developer_key_test.der"
 echo_and_exec java -Xms1g -"Dfile.encoding=UTF-8" -"Dapple.awt.UIElement=true"    \
     -jar "${SDK}"bin/monkeybrains.jar \
-    --output "bin/${PROJECT_NAME}Test.iq"    \
+    --output "bin/${PROJECT_NAME}${SYSTEM}.${BUILD}.iq"    \
     --jungles "monkey.jungle" \
     --private-key ${DEV_KEY}    \
     --package-app --release --warn
-echo -e "Generated bin/${PROJECT_NAME}Test.iq"
+echo -e "Generated bin/${PROJECT_NAME}${SYSTEM}.${BUILD}.iq"
 
 DEVICE=${1:-edge1050}
-OUTPUT_FILE="bin/${PROJECT_NAME}_${DEVICE}.prg"
+OUTPUT_FILE="bin/${PROJECT_NAME}${SYSTEM}.${BUILD}_${DEVICE}.prg"
 
 #if [[ $1 == "" ]]; then
 #    >&2 echo Usage: ciq-release.sh [device]
