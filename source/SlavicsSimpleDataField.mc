@@ -19,8 +19,18 @@ class SlavicsSimpleDataField extends WatchUi.DataField {
             Graphics.FONT_XTINY,
         ] as Array<Graphics.FontType>;
 
-    public var labelArea=null as TextArea;
-    public var valueArea=null as TextArea;
+    public var labelArea = new WatchUi.TextArea({
+            //:text=>labelText,
+            :color=>Graphics.COLOR_DK_GRAY,
+            :font=>FONTS.slice(4,null),
+            :justification => Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER,
+        }) as TextArea;
+    public var valueArea=new WatchUi.TextArea({
+            //:text=>valueText,
+            :color=>Graphics.COLOR_DK_BLUE,
+            :font=>FONTS,
+            :justification => Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER,
+        }) as TextArea;
     public var rim=0 as Number;
     public var labelLine=0 as Number;
     protected var textLabel="Label" as String;
@@ -35,26 +45,16 @@ class SlavicsSimpleDataField extends WatchUi.DataField {
         System.println("SlavicsSimpleDataField.onLayout() "+dc.getWidth()+"x"+dc.getHeight());
         rim=dc.getHeight()*0.02f;
         labelLine=dc.getHeight()*LABELHEIGHT;
-        labelArea = new WatchUi.TextArea({
-            //:text=>labelText,
-            :color=>Graphics.COLOR_DK_GRAY,
-            :font=>FONTS.slice(4,null),
-            :justification => Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER,
-            :locX =>rim,
-            :locY=>rim,
-            :width=>dc.getWidth()-2*rim,
-            :height=>labelLine-rim,
-        });
-        valueArea = new WatchUi.TextArea({
-            //:text=>valueText,
-            :color=>Graphics.COLOR_DK_BLUE,
-            :font=>FONTS,
-            :justification => Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER,
-            :locX =>rim,
-            :locY=>labelLine,
-            :width=>dc.getWidth()-2*rim,
-            :height=>dc.getHeight()-labelLine
-        });
+
+        labelArea.locX=rim;
+        labelArea.locY=rim;
+        labelArea.width=dc.getWidth()-2*rim;
+        labelArea.height=labelLine-rim;
+
+        valueArea.locX=rim;
+        valueArea.locY=labelLine;
+        valueArea.width=dc.getWidth()-2*rim;
+        valueArea.height=dc.getHeight()-labelLine;
 
     }
 
@@ -72,7 +72,7 @@ class SlavicsSimpleDataField extends WatchUi.DataField {
         valueArea.setColor(System.getDeviceSettings().isNightModeEnabled?Graphics.COLOR_WHITE:Graphics.COLOR_BLACK);
         valueArea.setText(textValue);
         labelArea.setColor(System.getDeviceSettings().isNightModeEnabled?Graphics.COLOR_LT_GRAY:Graphics.COLOR_DK_GRAY);
-        labelArea.setText(textLabel);
+        labelArea.setText(textLabel);        
     }
 
     // Display the value you computed here. This will be called

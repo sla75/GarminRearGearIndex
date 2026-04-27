@@ -8,7 +8,7 @@ import Toybox.WatchUi;
 
 class SlavicsGearRearView extends SlavicsSimpleDataField {
     private static const BATTERY_STATUS_COLOR = [0,Graphics.COLOR_DK_GREEN,Graphics.COLOR_DK_GREEN,Graphics.COLOR_DK_GREEN,Graphics.COLOR_ORANGE,Graphics.COLOR_RED,0,Graphics.COLOR_DK_RED,Graphics.COLOR_LT_GRAY] as Array<ColorType>;
-    private static const BATTERY_STATUS_TEXT = ["0","New","Good","Ok","Low","Critical","Unknown","Invalid","Cnt"];
+    private static const BATTERY_STATUS_TEXT = ["0","New","Good","Ok","Low","Crit.","Unkn.","Inv.","Cnt"];
     private static const BATTERY_NAME={0x01=>"FD",0x02=>"RD",0x03=>"LS",0x04=>"RS"} as Dictionary<Number,String>;
     private var bikeShift=new AntPlus.Shifting(new AntPlus.ShiftingListener()) as AntPlus.Shifting;
     private var batteries=[] as Array<BatteryData>;
