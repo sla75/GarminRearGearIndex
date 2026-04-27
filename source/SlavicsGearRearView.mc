@@ -47,10 +47,10 @@ class SlavicsGearRearView extends SlavicsSimpleDataField {
         self.setTextLabel(label);
     }
     /***/
-    (:release)
+    
     function compute(info as Activity.Info) as Void {
         SlavicsSimpleDataField.compute(info);
-        var bsds=bikeShift.getDeviceState() as AntPlus.DeviceState;
+        var bsds=getDeviceState() as AntPlus.DeviceState;
         if(bsds!=null&&bsds.state!=null){
             switch(bsds.state){
                 case AntPlus.DEVICE_STATE_SEARCHING:
@@ -82,19 +82,20 @@ class SlavicsGearRearView extends SlavicsSimpleDataField {
             }
         }
 
-        var ss=bikeShift.getShiftingStatus() as AntPlus.ShiftingStatus;
-        teethsLabel.setColor(System.getDeviceSettings().isNightModeEnabled?Graphics.COLOR_WHITE:Graphics.COLOR_BLACK);
-        if(ss!=null){
-                if(ss.rearDerailleur.gearIndex!=AntPlus.REAR_GEAR_INVALID){    
-                    setTextValue((ss.rearDerailleur.gearIndex+1).toString());
-                    teethsLabel.setText(ss.rearDerailleur.gearSize+unitTeeths);
+        var rds=getRearDerailleurStatus() as AntPlus.DerailleurStatus;
+        teethsLabel.setColor(System.getDeviceSettings().isNightModeEnabled?Graphics.COLOR_LT_GRAY:Graphics.COLOR_DK_GRAY);
+        if(rds!=null){
+                if(rds.gearIndex!=AntPlus.REAR_GEAR_INVALID){    
+                    setTextValue((rds.gearIndex+1).toString());
+                    teethsLabel.setText(rds.gearSize+unitTeeths);
                 } else {
                     setTextValue("Inv.");
-                    teethsLabel.setText("--"+unitTeeths);
+                    //teethsLabel.setText("--"+unitTeeths);
+                    teethsLabel.setText("");
                 }
         } else {
-            teethsLabel.setText("--");
-            setTextValue("--");
+            teethsLabel.setText(".");
+            setTextValue("..");
         }
     }
     public static const STATUSES =[null,
@@ -108,8 +109,55 @@ class SlavicsGearRearView extends SlavicsSimpleDataField {
                 AntPlus.BATT_STATUS_CNT,
 
             ] as Array<BatteryStatusValue>;
+    (:release)
+    function getDeviceState() as AntPlus.DeviceState {
+        return bikeShift.getDeviceState() as AntPlus.DeviceState;
+    }
     (:debug)
-    function compute(info as Activity.Info) as Void {
+    function getDeviceState() as AntPlus.DeviceState {
+        var ds=new AntPlus.DeviceState() as AntPlus.DeviceState;
+        ds.deviceNumber=999999;
+        ds.state=AntPlus.DEVICE_STATE_TRACKING;
+        if(System.getClockTime().sec<6){
+            ds.state=AntPlus.DEVICE_STATE_SEARCHING;
+        } else if(System.getClockTime().sec>54){
+            ds.state=AntPlus.DEVICE_STATE_CLOSED;
+        } else if(System.getClockTime().sec>58){
+            ds.state=AntPlus.DEVICE_STATE_DEAD;
+        }
+        System.println("SlavicsGearRearView DEBUG DeviceSate="+ds.state.toString());
+        return ds;
+    }
+    (:release)
+    function getRearDerailleurStatus() as AntPlus.DerailleurStatus {
+        return bikeShift;
+    }
+    (:debug)
+    function getRearDerailleurStatus() as AntPlus.DerailleurStatus {
+        var ss=bikeShift.getShiftingStatus() as AntPlus.ShiftingStatus;
+        if(ss==null||ss.rearDerailleur.gearIndex==AntPlus.REAR_GEAR_INVALID){
+            var myTeeths = [51, 45, 39, 33, 28, 24, 21, 18, 16, 14, 12, 10] as Array<Number>;
+            var rearDerailleur=new DerailleurStatus();
+            if(System.getClockTime().sec==13){
+                rearDerailleur.gearIndex=AntPlus.FRONT_GEAR_INVALID;
+                rearDerailleur.gearMax=AntPlus.MAX_GEARS_INVALID;
+                rearDerailleur.gearSize=0;
+                rearDerailleur.invalidInboardShiftCount=0;
+                rearDerailleur.invalidOutboardShiftCount=0;
+                rearDerailleur.shiftFailureCount=0;
+            } else {
+                rearDerailleur.gearIndex=System.getClockTime().sec/3%myTeeths.size();
+                rearDerailleur.gearMax=myTeeths.size();
+                rearDerailleur.gearSize=myTeeths[rearDerailleur.gearIndex];
+                rearDerailleur.invalidInboardShiftCount=Math.rand()%255;
+                rearDerailleur.invalidOutboardShiftCount=Math.rand()%255;
+                rearDerailleur.shiftFailureCount=Math.rand()%255;
+            }
+            System.println("SlavicsGearRearView DEBUG gearIndex="+rearDerailleur.gearIndex);
+            return rearDerailleur;
+        }
+        return ss.rearDerailleur;
+        /***
         SlavicsSimpleDataField.compute(info);
         teethsLabel.setColor(System.getDeviceSettings().isNightModeEnabled?Graphics.COLOR_WHITE:Graphics.COLOR_BLACK);
         if(System.getClockTime().sec/15%2==0){
@@ -135,12 +183,11 @@ class SlavicsGearRearView extends SlavicsSimpleDataField {
                         :name=>BATTERY_NAME.hasKey(ids[i])?BATTERY_NAME.get(ids[i]):ids[i].format("%X"),
                         :batteryStatus=>bs.batteryStatus==null?AntPlus.BATT_STATUS_INVALID:bs.batteryStatus,
                         :color=>BATTERY_STATUS_COLOR[bs.batteryStatus==null?0:bs.batteryStatus]
-                        //:statusString=>BATTERY_STATUS_COLOR[];
                     } as BatteryData;
                 batteries.add(b);
             }
         }
-        //batteryLabel.setText(bt);
+        /***/
     }
     
     // Display the value you computed here. This will be called
