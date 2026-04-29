@@ -48,3 +48,29 @@ git branch -d iss53
 |Edge550|420x600|6.0|56x56|21|28|F|
 |Edge850|420x600|6.0|56x56|21|28|F|
 |Edge1050|480x800|6.0|68x68|21|28|F|
+
+## Fonts
+### Edge1050
+PartNumber: 006-B4440-00
+Screen: 480x800
+
+|Font|Height|Ascent|Descent|
+|---:|---:|---:|---:|
+|FONT_XTINY|21|15|6|
+|FONT_TINY|28|20|8|
+|FONT_SMALL|33|24|9|
+|FONT_MEDIUM|38|27|11|
+|FONT_LARGE|61|44|17|
+
+### Edge1040
+PartNumber: 006-B3843-00
+Screen: 282x470
+|Font|Height|Ascent|Descent|
+|---:|---:|---:|---:|
+|FONT_XTINY|13|9|4|
+|FONT_TINY|17|12|5|
+|FONT_SMALL|19|14|5|
+|FONT_MEDIUM|22|16|6|
+|FONT_LARGE|36|26|10|
+
+### Edge840
