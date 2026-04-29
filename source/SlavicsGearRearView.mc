@@ -96,23 +96,63 @@ class SlavicsGearRearView extends SlavicsSimpleDataField {
             lastIndex=-2;
         }
     }
-
+    var b=new BatteryIcon({:font=>WatchUi.loadResource(Rez.Fonts.BatterySmall),:justification=>Graphics.TEXT_JUSTIFY_RIGHT});
     public function onUpdate(dc as Dc) as Void {
         System.println("SlavicsGearRearView.onUpdate()");
         SlavicsSimpleDataField.onUpdate(dc);
         teethsLabel.draw(dc);
+        //var FBT=WatchUi.loadResource(Rez.Fonts.BatterySmall);
+        //b.setFont(FBT);
         if(batteries.size()>0){
             // Draw batteries
+            var font=Graphics.FONT_SMALL;
             var bLocX=dc.getWidth()-rim;
-            var bLocY=dc.getHeight()-rim-Graphics.getFontAscent(Graphics.FONT_XTINY);
+            var bLocY=dc.getHeight()-rim-Graphics.getFontAscent(font);
+            b.locY=bLocY;
             for(var i=0;i<batteries.size();i++){
                 var bd=(batteries as Array<RearShifting.BatteryData>)[i] as RearShifting.BatteryData;
-                dc.setColor(bd.get(:color),Graphics.COLOR_TRANSPARENT);                
-                dc.drawText(bLocX,bLocY,Graphics.FONT_XTINY,BATTERY_STATUS_TEXT[bd.get(:batteryStatus)],Graphics.TEXT_JUSTIFY_RIGHT);
-                bLocX-=dc.getTextWidthInPixels("."+BATTERY_STATUS_TEXT[bd.get(:batteryStatus)],Graphics.FONT_XTINY);
-                dc.drawText(bLocX,bLocY,Graphics.FONT_XTINY,bd.get(:name),Graphics.TEXT_JUSTIFY_RIGHT);
-                bLocX-=dc.getTextWidthInPixels(bd.get(:name)+" ",Graphics.FONT_XTINY);
+                //dc.setColor(bd.get(:color),Graphics.COLOR_TRANSPARENT);                
+                //dc.drawText(bLocX,bLocY,font,BATTERY_STATUS_TEXT[bd.get(:batteryStatus)],Graphics.TEXT_JUSTIFY_RIGHT);
+                //bLocX-=dc.getTextWidthInPixels("."+BATTERY_STATUS_TEXT[bd.get(:batteryStatus)],font);
+                dc.setColor(Graphics.COLOR_BLACK,Graphics.COLOR_TRANSPARENT);                
+                dc.drawText(bLocX,bLocY,font,bd.get(:name),Graphics.TEXT_JUSTIFY_RIGHT);
+                bLocX-=dc.getTextWidthInPixels(bd.get(:name),font);
+                b.locX=bLocX;
+                b.compute(bd.get(:batteryStatus),false);
+                b.draw(dc);
+                bLocX-=b.getWidth(dc)+3;
             }
+            /***
+            b.locX=bLocX;
+            b.compute(AntPlus.BATT_STATUS_NEW,true);
+            b.draw(dc);bLocX-=b.getWidth(dc);b.locX=bLocX;
+            b.compute(AntPlus.BATT_STATUS_GOOD,false);
+            b.draw(dc);bLocX-=b.getWidth(dc);b.locX=bLocX;
+            b.compute(AntPlus.BATT_STATUS_OK,false);
+            b.draw(dc);bLocX-=b.getWidth(dc);b.locX=bLocX;
+            b.compute(AntPlus.BATT_STATUS_LOW,false);
+            b.draw(dc);bLocX-=b.getWidth(dc);b.locX=bLocX;
+            b.compute(AntPlus.BATT_STATUS_INVALID,false);
+            b.draw(dc);bLocX-=b.getWidth(dc);b.locX=bLocX;
+            b.compute(AntPlus.BATT_STATUS_CRITICAL,false);
+            b.draw(dc);bLocX-=b.getWidth(dc);b.locX=bLocX;
+            b.compute(AntPlus.BATT_STATUS_CNT,false);
+            b.draw(dc);bLocX-=b.getWidth(dc);b.locX=bLocX;
+            /***
+            dc.setColor(Graphics.COLOR_LT_GRAY,Graphics.COLOR_TRANSPARENT);
+            dc.drawLine(0,bLocY,dc.getWidth(),bLocY);
+
+            var fa=Graphics.getFontAscent(font);
+            dc.drawLine(bLocX,bLocY-fa,bLocX,bLocY+2*fa);
+            dc.drawLine(0,bLocY+fa,dc.getWidth(),bLocY+fa);
+            dc.drawLine(0,bLocY+fa+Graphics.getFontDescent(font),dc.getWidth(),bLocY+fa+Graphics.getFontDescent(font));
+            
+            dc.setColor(Graphics.COLOR_BLACK,Graphics.COLOR_TRANSPARENT);
+            dc.drawText(bLocX,bLocY,font,"TŤyq",Graphics.TEXT_JUSTIFY_RIGHT);
+            bLocX-=dc.getTextWidthInPixels("TŤyq",font);
+            dc.drawText(bLocX,bLocY,FBT,"0123456",Graphics.TEXT_JUSTIFY_RIGHT);
+            //bLocX-=dc.getTextWidthInPixels(bd.get(:name)+" ",Graphics.FONT_XTINY);
+            /***/
         }
     }
 }

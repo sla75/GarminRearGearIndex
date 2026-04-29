@@ -19,7 +19,7 @@ class RearShifting {
                 AntPlus.BATT_STATUS_OK,
                 AntPlus.BATT_STATUS_LOW,
                 AntPlus.BATT_STATUS_CRITICAL,
-                null,
+                AntPlus.BATT_STATUS_CNT,
                 AntPlus.BATT_STATUS_INVALID,
                 AntPlus.BATT_STATUS_CNT,
 
@@ -85,15 +85,15 @@ class RearShifting {
         var batteries=[] as Array<BatteryData>;
         for(var i=0;i<ids.size();i++){
             var bs=new BatteryStatus();
-            bs.batteryStatus=System.getClockTime().sec==13?null:(1+Math.rand()%7);
+            bs.batteryStatus=BATTERY_STATUSES[(1+Math.rand()%7)];
             bs.batteryVoltage=System.getClockTime().sec/7f;
             bs.operatingTime=System.getClockTime().min*60+System.getClockTime().sec;
             
             var b={
                     :identifier=>ids[i],
                     :name=>BATTERY_NAME.hasKey(ids[i])?BATTERY_NAME.get(ids[i]):ids[i].format("%X"),
-                    :batteryStatus=>bs.batteryStatus==null?AntPlus.BATT_STATUS_INVALID:bs.batteryStatus,
-                    :color=>BATTERY_STATUS_COLOR[bs.batteryStatus==null?0:bs.batteryStatus]
+                    :batteryStatus=>bs.batteryStatus,
+                    :color=>BATTERY_STATUS_COLOR[bs.batteryStatus]
                 } as BatteryData;
             batteries.add(b);
         }

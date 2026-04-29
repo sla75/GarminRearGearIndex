@@ -20,7 +20,7 @@ edge1040.resourcePath = $(edge1040.resourcePath);resources-GLI40
 
 # Set compatibility edges 36x36
 #edge1030.resourcePath = $(edge1030.resourcePath);resources-GLI36
-edge1030plus.resourcePath = $(edge1030plus.resourcePath);resources-GLI36
-edge1030bontrager.resourcePath = $(edge1030bontrager.resourcePath);resources-GLI36
+#edge1030plus.resourcePath = $(edge1030plus.resourcePath);resources-GLI36
+#edge1030bontrager.resourcePath = $(edge1030bontrager.resourcePath);resources-GLI36
 edgemtb.resourcePath = $(edgemtb.resourcePath);resources-GLI36
 edgeexplore2.resourcePath = $(edgeexplore2.resourcePath);resources-GLI36
