@@ -96,7 +96,8 @@ class SlavicsGearRearView extends SlavicsSimpleDataField {
             lastIndex=-2;
         }
     }
-    var b=new BatteryIcon({:font=>WatchUi.loadResource(Rez.Fonts.BatterySmall),:justification=>Graphics.TEXT_JUSTIFY_RIGHT});
+    var battIcon=new BatteryIcon({:font=>WatchUi.loadResource(Rez.Fonts.BatteryMedium),:justification=>Graphics.TEXT_JUSTIFY_RIGHT});
+    var battFont=Graphics.FONT_SMALL;
     public function onUpdate(dc as Dc) as Void {
         System.println("SlavicsGearRearView.onUpdate()");
         SlavicsSimpleDataField.onUpdate(dc);
@@ -105,22 +106,22 @@ class SlavicsGearRearView extends SlavicsSimpleDataField {
         //b.setFont(FBT);
         if(batteries.size()>0){
             // Draw batteries
-            var font=Graphics.FONT_SMALL;
+            
             var bLocX=dc.getWidth()-rim;
-            var bLocY=dc.getHeight()-rim-Graphics.getFontAscent(font);
-            b.locY=bLocY;
+            var bLocY=dc.getHeight()-rim-Graphics.getFontAscent(battFont);
+            battIcon.locY=bLocY;
             for(var i=0;i<batteries.size();i++){
                 var bd=(batteries as Array<RearShifting.BatteryData>)[i] as RearShifting.BatteryData;
                 //dc.setColor(bd.get(:color),Graphics.COLOR_TRANSPARENT);                
                 //dc.drawText(bLocX,bLocY,font,BATTERY_STATUS_TEXT[bd.get(:batteryStatus)],Graphics.TEXT_JUSTIFY_RIGHT);
                 //bLocX-=dc.getTextWidthInPixels("."+BATTERY_STATUS_TEXT[bd.get(:batteryStatus)],font);
                 dc.setColor(Graphics.COLOR_BLACK,Graphics.COLOR_TRANSPARENT);                
-                dc.drawText(bLocX,bLocY,font,bd.get(:name),Graphics.TEXT_JUSTIFY_RIGHT);
-                bLocX-=dc.getTextWidthInPixels(bd.get(:name),font);
-                b.locX=bLocX;
-                b.compute(bd.get(:batteryStatus),false);
-                b.draw(dc);
-                bLocX-=b.getWidth(dc)+3;
+                dc.drawText(bLocX,bLocY,battFont,bd.get(:name),Graphics.TEXT_JUSTIFY_RIGHT);
+                bLocX-=dc.getTextWidthInPixels(bd.get(:name),battFont);
+                battIcon.locX=bLocX;
+                battIcon.compute(bd.get(:batteryStatus),false);
+                battIcon.draw(dc);
+                bLocX-=battIcon.getWidth(dc)+3;
             }
             /***
             b.locX=bLocX;
