@@ -8,6 +8,8 @@ class RearShifting {
             :identifier as Number,
             :name as String,
             :batteryStatus as Number,
+            :batteryVoltage as Float,
+            :operatingTime as Number,
             :color as Graphics.ColorType,
         };
 
@@ -24,7 +26,7 @@ class RearShifting {
                 AntPlus.BATT_STATUS_CNT,
 
             ] as Array<BatteryStatusValue>;
-
+    (:debug)
     private const DEBUG_TEETHS = [51, 45, 39, 33, 28, 24, 21, 18, 16, 14, 12, 10] as Array<Number>;
     private var bikeShift=new AntPlus.Shifting(new AntPlus.ShiftingListener()) as AntPlus.Shifting;
         
@@ -88,14 +90,14 @@ class RearShifting {
             bs.batteryStatus=BATTERY_STATUSES[(1+Math.rand()%7)];
             bs.batteryVoltage=System.getClockTime().sec/7f;
             bs.operatingTime=System.getClockTime().min*60+System.getClockTime().sec;
-            
-            var b={
+            batteries.add({
                     :identifier=>ids[i],
                     :name=>BATTERY_NAME.hasKey(ids[i])?BATTERY_NAME.get(ids[i]):ids[i].format("%X"),
                     :batteryStatus=>bs.batteryStatus,
+                    :batteryVoltage=>bs.batteryVoltage,
+                    :operatingTime=>bs.operatingTime,
                     :color=>BATTERY_STATUS_COLOR[bs.batteryStatus]
-                } as BatteryData;
-            batteries.add(b);
+                } as BatteryData);
         }
         return batteries;
     }
@@ -107,15 +109,17 @@ class RearShifting {
         if(ids!=null){
             for(var i=0;i<ids.size();i++){
                 var id=ids[i];
-                var bs=bikeShift.getBatteryStatus(id);
-                bs.batteryStatus=bs.batteryStatus==null?AntPlus.BATT_STATUS_INVALID:bs.batteryStatus;
-                var b={
-                    :identifier=>id,
-                    :name=>RearShifting.BATTERY_NAME.hasKey(id)?RearShifting.BATTERY_NAME.get(id):id.format("%X"),
-                    :batteryStatus=>bs.batteryStatus==null?6:RearShifting.BATTERY_STATUSES.indexOf(bs.batteryStatus),
-                    :color=>RearShifting.BATTERY_STATUS_COLOR[bs.batteryStatus]
-                } as BatteryData;
-                batteries.add(b);
+                var bs=bikeShift.getBatteryStatus(id) as BatteryStatus;
+                if(bs has :batteryStatus && bs!=null){
+                    batteries.add({
+                        :identifier=>id,
+                        :name=>RearShifting.BATTERY_NAME.hasKey(id)?RearShifting.BATTERY_NAME.get(id):id.format("%X"),
+                        :batteryStatus=>bs.batteryStatus==null?AntPlus.BATT_STATUS_INVALID:RearShifting.BATTERY_STATUSES.indexOf(bs.batteryStatus),
+                        :batteryVoltage=>bs.batteryVoltage==null?0f:bs.batteryVoltage,
+                        :operatingTime=>bs.operatingTime==null?0:bs.batteryVoltage,
+                        :color=>RearShifting.BATTERY_STATUS_COLOR[bs.batteryStatus]
+                    } as BatteryData);
+                }
             }
         }
         return batteries;
