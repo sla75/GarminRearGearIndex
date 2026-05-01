@@ -15,7 +15,7 @@ class RearShifting {
 
     public static const BATTERY_STATUS_COLOR = [0,Graphics.COLOR_DK_GREEN,Graphics.COLOR_DK_GREEN,Graphics.COLOR_DK_GREEN,Graphics.COLOR_ORANGE,Graphics.COLOR_RED,0,Graphics.COLOR_DK_RED,Graphics.COLOR_LT_GRAY] as Array<ColorType>;
     public static const BATTERY_NAME={0x01=>"FD",0x02=>"RD",0x03=>"LS",0x04=>"RS"} as Dictionary<Number,String>;
-    public static const BATTERY_STATUSES =[null,
+    public static const BATTERY_STATUSES =[AntPlus.BATT_STATUS_CNT,
                 AntPlus.BATT_STATUS_NEW,
                 AntPlus.BATT_STATUS_GOOD,
                 AntPlus.BATT_STATUS_OK,
@@ -111,14 +111,23 @@ class RearShifting {
                 var id=ids[i];
                 var bs=bikeShift.getBatteryStatus(id) as BatteryStatus;
                 if(bs has :batteryStatus && bs!=null){
+                    var b={:identifier=>id} as BatteryData;
+                    b.put(:name,BATTERY_NAME.hasKey(id)?BATTERY_NAME.get(id):id.format("%X"));
+                    b.put(:batteryStatus,bs.batteryStatus==null?AntPlus.BATT_STATUS_INVALID:BATTERY_STATUSES.indexOf(bs.batteryStatus));
+                    b.put(:batteryVoltage,(bs has :batteryVoltage && bs.batteryVoltage!=null)?bs.batteryVoltage:0f);
+                    b.put(:operatingTime,(bs has :operatingTime && bs.operatingTime!=null)?bs.batteryVoltage:0);
+                    b.put(:color,BATTERY_STATUS_COLOR[bs.batteryStatus]);
+                    batteries.add(b);
+                    /***
                     batteries.add({
                         :identifier=>id,
-                        :name=>RearShifting.BATTERY_NAME.hasKey(id)?RearShifting.BATTERY_NAME.get(id):id.format("%X"),
-                        :batteryStatus=>bs.batteryStatus==null?AntPlus.BATT_STATUS_INVALID:RearShifting.BATTERY_STATUSES.indexOf(bs.batteryStatus),
-                        :batteryVoltage=>bs.batteryVoltage==null?0f:bs.batteryVoltage,
-                        :operatingTime=>bs.operatingTime==null?0:bs.batteryVoltage,
-                        :color=>RearShifting.BATTERY_STATUS_COLOR[bs.batteryStatus]
+                        :name=>BATTERY_NAME.hasKey(id)?BATTERY_NAME.get(id):id.format("%X"),
+                        :batteryStatus=>bs.batteryStatus==null?AntPlus.BATT_STATUS_INVALID:BATTERY_STATUSES.indexOf(bs.batteryStatus),
+                        :batteryVoltage=>(bs has :batteryVoltage && bs.batteryVoltage!=null)?bs.batteryVoltage:0f,
+                        :operatingTime=>(bs has :operatingTime && bs.operatingTime!=null)?bs.batteryVoltage:0,
+                        :color=>BATTERY_STATUS_COLOR[bs.batteryStatus]
                     } as BatteryData);
+                    /***/
                 }
             }
         }
