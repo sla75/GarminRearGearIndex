@@ -14,7 +14,7 @@ class BatteryIcon extends Drawable {
         Drawable.initialize(params);
     }
 
-    public static const BATTERY_STATUS_COLOR = [0,Graphics.COLOR_DK_GREEN,Graphics.COLOR_DK_GREEN,Graphics.COLOR_DK_GREEN,Graphics.COLOR_ORANGE,Graphics.COLOR_RED,0,Graphics.COLOR_DK_RED,Graphics.COLOR_LT_GRAY] as Array<ColorType>;
+    public static const BATTERY_STATUS_COLOR = [0,Graphics.COLOR_DK_GREEN,Graphics.COLOR_DK_GREEN,Graphics.COLOR_DK_GREEN,Graphics.COLOR_ORANGE,Graphics.COLOR_RED,0,Graphics.COLOR_DK_GRAY,Graphics.COLOR_LT_GRAY] as Array<ColorType>;
     public static const BATTERY_STATUSES =[null,
                 AntPlus.BATT_STATUS_NEW,
                 AntPlus.BATT_STATUS_GOOD,
@@ -27,11 +27,13 @@ class BatteryIcon extends Drawable {
 
             ] as Array<BatteryStatusValue>;
     private static const BATCHAR={
+            0=>"0",
             AntPlus.BATT_STATUS_NEW=>"0",
             AntPlus.BATT_STATUS_GOOD=>"1",
             AntPlus.BATT_STATUS_OK=>"2",
             AntPlus.BATT_STATUS_LOW=>"3",
             AntPlus.BATT_STATUS_CRITICAL=>"4",
+            6=>"0",
             AntPlus.BATT_STATUS_INVALID=>"5",
             AntPlus.BATT_STATUS_CNT=>"5",
         };
@@ -52,8 +54,8 @@ class BatteryIcon extends Drawable {
     public function draw(dc as Dc) {
         //dc.setColor(Graphics.COLOR_BLACK,Graphics.COLOR_TRANSPARENT);
         //dc.drawText(50,50,font,"0123456",Graphics.TEXT_JUSTIFY_RIGHT);
-        //System.println("Battery status="+status.toString());
-        //System.println("Battery char="+BATCHAR.get(status));
+        //System.println("BatteryIcon.draw() status="+status.toString());
+        //System.println("BatteryIcon.draw() char="+BATCHAR.get(status));
         dc.setColor(BATTERY_STATUS_COLOR[status],Graphics.COLOR_TRANSPARENT);
         dc.drawText(self.locX,self.locY,fontBattery,BATCHAR.get(status),self.justify);
         if(charge){

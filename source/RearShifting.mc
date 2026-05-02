@@ -28,6 +28,7 @@ class RearShifting {
             ] as Array<BatteryStatusValue>;
     (:debug)
     private const DEBUG_TEETHS = [51, 45, 39, 33, 28, 24, 21, 18, 16, 14, 12, 10] as Array<Number>;
+
     private var bikeShift=new AntPlus.Shifting(new AntPlus.ShiftingListener()) as AntPlus.Shifting;
         
     (:release)
@@ -52,7 +53,7 @@ class RearShifting {
     }
     (:release)
     public function getRearDerailleurStatus() as AntPlus.DerailleurStatus {
-        return bikeShift;
+        return bikeShift.getShiftingStatus().rearDerailleur;
     }
     (:debug)
     public function getRearDerailleurStatus() as AntPlus.DerailleurStatus {
@@ -86,18 +87,30 @@ class RearShifting {
         var ids=[0x01,0x03] as Array<Number>;
         var batteries=[] as Array<BatteryData>;
         for(var i=0;i<ids.size();i++){
+            var id=ids[i];
             var bs=new BatteryStatus();
             bs.batteryStatus=BATTERY_STATUSES[(1+Math.rand()%7)];
             bs.batteryVoltage=System.getClockTime().sec/7f;
             bs.operatingTime=System.getClockTime().min*60+System.getClockTime().sec;
-            batteries.add({
-                    :identifier=>ids[i],
-                    :name=>BATTERY_NAME.hasKey(ids[i])?BATTERY_NAME.get(ids[i]):ids[i].format("%X"),
-                    :batteryStatus=>bs.batteryStatus,
-                    :batteryVoltage=>bs.batteryVoltage,
-                    :operatingTime=>bs.operatingTime,
+            if(bs has :batteryStatus && bs!=null){
+                var b={:identifier=>id} as BatteryData;
+                b.put(:name,BATTERY_NAME.hasKey(id)?BATTERY_NAME.get(id):id.format("%X"));
+                b.put(:batteryStatus,bs.batteryStatus==null?AntPlus.BATT_STATUS_INVALID:bs.batteryStatus);
+                b.put(:batteryVoltage,(bs has :batteryVoltage && bs.batteryVoltage!=null)?bs.batteryVoltage:0f);
+                b.put(:operatingTime,(bs has :operatingTime && bs.operatingTime!=null)?bs.batteryVoltage:0);
+                b.put(:color,BATTERY_STATUS_COLOR[bs.batteryStatus]);
+                batteries.add(b);
+                /***
+                batteries.add({
+                    :identifier=>id,
+                    :name=>BATTERY_NAME.hasKey(id)?BATTERY_NAME.get(id):id.format("%X"),
+                    :batteryStatus=>bs.batteryStatus==null?AntPlus.BATT_STATUS_INVALID:bs.batteryStatus,
+                    :batteryVoltage=>(bs has :batteryVoltage && bs.batteryVoltage!=null)?bs.batteryVoltage:0f,
+                    :operatingTime=>(bs has :operatingTime && bs.operatingTime!=null)?bs.batteryVoltage:0,
                     :color=>BATTERY_STATUS_COLOR[bs.batteryStatus]
                 } as BatteryData);
+                /***/
+            }
         }
         return batteries;
     }
@@ -113,7 +126,7 @@ class RearShifting {
                 if(bs has :batteryStatus && bs!=null){
                     var b={:identifier=>id} as BatteryData;
                     b.put(:name,BATTERY_NAME.hasKey(id)?BATTERY_NAME.get(id):id.format("%X"));
-                    b.put(:batteryStatus,bs.batteryStatus==null?AntPlus.BATT_STATUS_INVALID:BATTERY_STATUSES.indexOf(bs.batteryStatus));
+                    b.put(:batteryStatus,bs.batteryStatus==null?AntPlus.BATT_STATUS_INVALID:bs.batteryStatus);
                     b.put(:batteryVoltage,(bs has :batteryVoltage && bs.batteryVoltage!=null)?bs.batteryVoltage:0f);
                     b.put(:operatingTime,(bs has :operatingTime && bs.operatingTime!=null)?bs.batteryVoltage:0);
                     b.put(:color,BATTERY_STATUS_COLOR[bs.batteryStatus]);
@@ -122,7 +135,7 @@ class RearShifting {
                     batteries.add({
                         :identifier=>id,
                         :name=>BATTERY_NAME.hasKey(id)?BATTERY_NAME.get(id):id.format("%X"),
-                        :batteryStatus=>bs.batteryStatus==null?AntPlus.BATT_STATUS_INVALID:BATTERY_STATUSES.indexOf(bs.batteryStatus),
+                        :batteryStatus=>bs.batteryStatus==null?AntPlus.BATT_STATUS_INVALID:bs.batteryStatus,
                         :batteryVoltage=>(bs has :batteryVoltage && bs.batteryVoltage!=null)?bs.batteryVoltage:0f,
                         :operatingTime=>(bs has :operatingTime && bs.operatingTime!=null)?bs.batteryVoltage:0,
                         :color=>BATTERY_STATUS_COLOR[bs.batteryStatus]
@@ -133,5 +146,4 @@ class RearShifting {
         }
         return batteries;
     }
-    
 }
