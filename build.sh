@@ -14,7 +14,7 @@ SDK="$(cat "${HOME}/.Garmin/ConnectIQ/current-sdk.cfg")"
 
 PROJECT_FOLDER=${PWD}
 PROJECT_NAME=$(basename "${PROJECT_FOLDER}")
-PROJECT_NAME="RearGearIndex"
+PROJECT_NAME="SlavicGearIndex"
 
 APP_TEST_ID="c4755d9c-e9e1-4924-b458-04e708ce9999"
 APP_PROD_ID="c4755d9c-e9e1-4924-b458-04e708ce0000"
@@ -58,10 +58,11 @@ if [ ${SYSTEM} == "Test" ]; then
 else
     if [ ${APP_ID} != ${APP_PROD_ID} ]; then
         echo "Write APP_PROD_ID=${APP_PROD_ID}"
-        echo -e "setns iq=http://www.garmin.com/xml/connectiq\ncd //iq:manifest/iq:application/@id\nset ${APP_TEST_ID}\nsave\nbye" | xmllint --shell manifest.xml | grep -v ">"
+        echo -e "setns iq=http://www.garmin.com/xml/connectiq\ncd //iq:manifest/iq:application/@id\nset ${APP_PROD_ID}\nsave\nbye" | xmllint --shell manifest.xml | grep -v ">"
     fi
 fi
-
+echo "Set AppName=${PROJECT_NAME}${SYSTEM}"
+echo -e "cd //strings/string[@id=\"AppName\"]\nset ${PROJECT_NAME}${SYSTEM}\nsave\nbye" | xmllint --shell resources/strings/strings.xml | grep -v ">"
 
 #echo -ne "2. APP_ID="
 #echo -e "setns iq=http://www.garmin.com/xml/connectiq\ncat //iq:manifest/iq:application/@id" | xmllint --shell manifest.xml | grep -v ">" | cut -f 2 -d "=" | tr -d \"
