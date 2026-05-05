@@ -50,12 +50,13 @@ class SlavicsSimpleDataField extends WatchUi.DataField {
         labelArea.locX=rim;
         labelArea.locY=rim;
         labelArea.width=dc.getWidth()-2*rim;
-        labelArea.height=labelLine-rim;
+        labelArea.height=labelLine+rim;
 
         valueArea.locX=rim;
-        valueArea.locY=labelLine;
+        //valueArea.locY=labelLine-rim;
+        valueArea.locY=labelArea.locY+labelArea.height/2;
         valueArea.width=dc.getWidth()-2*rim;
-        valueArea.height=dc.getHeight()-labelLine;
+        valueArea.height=dc.getHeight()-valueArea.locY-rim;
 
     }
 
@@ -103,8 +104,12 @@ class SlavicsSimpleDataField extends WatchUi.DataField {
         //labelArea.draw(dc);
 
         dc.setColor(Graphics.COLOR_LT_GRAY,Graphics.COLOR_TRANSPARENT);
-        dc.drawRectangle(rim,rim,dc.getWidth()-2*rim,dc.getHeight()*LABELHEIGHT-rim);
-        dc.drawRectangle(rim,dc.getHeight()*LABELHEIGHT,dc.getWidth()-2*rim,dc.getHeight()*(1-LABELHEIGHT)-rim);
+        dc.drawRectangle(labelArea.locX,labelArea.locY,labelArea.width,labelArea.height);
+        dc.drawLine(labelArea.locX,labelArea.locY+labelArea.height/2,labelArea.locX+labelArea.width,labelArea.locY+labelArea.height/2);
+
+        dc.setColor(Graphics.COLOR_DK_GRAY,Graphics.COLOR_TRANSPARENT);
+        dc.drawRectangle(valueArea.locX,valueArea.locY,valueArea.width,valueArea.height);
+        dc.drawLine(valueArea.locX,valueArea.locY+valueArea.height/2,valueArea.locX+valueArea.width,valueArea.locY+valueArea.height/2);
     }
 
 }

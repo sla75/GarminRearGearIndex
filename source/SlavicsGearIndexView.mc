@@ -9,7 +9,7 @@ import Toybox.WatchUi;
 
 class SlavicsGearIndexView extends SlavicsSimpleDataField {
 
-    public static const BATTERY_STATUS_TEXT = ["0","New","Good","Ok","Low","Crit.","Unkn.","Inv.","Cnt"];
+    public static const BATTERY_STATUS_TEXT = ["0","New","Good","Ok","Low","Crit.","Unkn.","Inv.","Cnt"] as Array<String>;
     private var rearShift=new RearShifting() as RearShifting;
     private var batteries=[] as Array<RearShifting.BatteryData>;
     
@@ -80,7 +80,7 @@ class SlavicsGearIndexView extends SlavicsSimpleDataField {
                 default:
                     self.setTextLabel("?"+label+"?");
             }
-            batteries=rearShift.getBatteries();
+            batteries=rearShift.getBatteries() as Array<RearShifting.BatteryData>;
         }
 
         var rds=rearShift.getRearDerailleurStatus() as AntPlus.DerailleurStatus;
