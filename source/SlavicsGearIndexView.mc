@@ -118,9 +118,8 @@ class SlavicsGearIndexView extends SlavicsSimpleDataField {
         }
 
         var fl=rds.invalidInboardShiftCount+"/"+rds.invalidOutboardShiftCount+"/"+rds.shiftFailureCount;
-        System.println("FAIL fl="+fl+" ft="+failTime);
         if(!fl.equals(oldFailLabel)){
-            System.println("FAIL ol="+oldFailLabel+" ft="+failTime);
+            System.println("FAIL shift="+fl+" ft="+failTime);
             failLabel.setText(fl);
             failLabel.setVisible(true);
             failTime=3;
