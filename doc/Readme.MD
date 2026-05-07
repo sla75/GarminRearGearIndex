@@ -1,3 +1,6 @@
+# Publish Garmin App
+https://developer.garmin.com/connect-iq/core-topics/publishing-to-the-store/
+
 # GIT Branching
 https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
 

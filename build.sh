@@ -55,12 +55,12 @@ APP_ID=$(echo -e "setns iq=http://www.garmin.com/xml/connectiq\ncat //iq:manifes
 if [ "${SYSTEM}" == "Test" ]; then
     if [ ${APP_ID} != ${APP_TEST_ID} ]; then
         echo "Write APP_TEST_ID=${APP_TEST_ID}"
-        echo -e "setns iq=http://www.garmin.com/xml/connectiq\ncd //iq:manifest/iq:application/@id\nset ${APP_TEST_ID}\nsave\nbye" | xmllint --shell manifest.xml | grep -v ">"
+        echo -e "setns iq=http://www.garmin.com/xml/connectiq\ncd //iq:manifest/iq:application/@id\nset ${APP_TEST_ID}\nsave\nbye" | xmllint --shell manifest.xml
     fi
 else
     if [ ${APP_ID} != ${APP_PROD_ID} ]; then
         echo "Write APP_PROD_ID=${APP_PROD_ID}"
-        echo -e "setns iq=http://www.garmin.com/xml/connectiq\ncd //iq:manifest/iq:application/@id\nset ${APP_PROD_ID}\nsave\nbye" | xmllint --shell manifest.xml | grep -v ">"
+        echo -e "setns iq=http://www.garmin.com/xml/connectiq\ncd //iq:manifest/iq:application/@id\nset ${APP_PROD_ID}\nsave\nbye" | xmllint --shell manifest.xml
     fi
 fi
 echo "Set AppName=${PROJECT_NAME}${SYSTEM}"
