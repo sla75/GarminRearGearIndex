@@ -31,6 +31,10 @@ git merge iss53
 Merge made by the 'recursive' strategy.
 index.html |    1 +
 1 file changed, 1 insertion(+)
+## List of branchs
+```
+git branch -a
+```
 
 ## Deleting branch
 ```
