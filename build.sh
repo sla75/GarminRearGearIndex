@@ -64,7 +64,7 @@ else
     fi
 fi
 echo "Set AppName=${PROJECT_NAME}${SYSTEM}"
-echo -e "cd //strings/string[@id=\"AppName\"]\nset ${PROJECT_NAME}${SYSTEM}\nsave\nbye" | xmllint --shell resources/strings/strings.xml
+echo -e "cd //strings/string[@id=\"AppName\"]\nset ${PROJECT_NAME} ${BUILD}${SYSTEM}\nsave\nbye" | xmllint --shell resources/strings/strings.xml
 
 #echo -ne "2. APP_ID="
 #echo -e "setns iq=http://www.garmin.com/xml/connectiq\ncat //iq:manifest/iq:application/@id" | xmllint --shell manifest.xml | grep -v ">" | cut -f 2 -d "=" | tr -d \"
