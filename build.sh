@@ -17,6 +17,7 @@ SDK="$(cat "${HOME}/.Garmin/ConnectIQ/current-sdk.cfg")"
 PROJECT_FOLDER=${PWD}
 PROJECT_NAME=$(basename "${PROJECT_FOLDER}")
 PROJECT_NAME="SlavicGearIndex"
+APP_STRING=resources/strings/app.xml
 
 APP_TEST_ID="c4755d9c-e9e1-4924-b458-04e708ce9999"
 APP_PROD_ID="c4755d9c-e9e1-4924-b458-04e708ce0000"
@@ -36,14 +37,14 @@ COMMITS=$(git rev-list --count --since="$(date +'%+4Y-%m-01')" --all)
 if [ -z ${SYSTEM} ];  then
     BUILD=${CURRENT_VERSION}"."$(date +'%+y%m')"."$(git rev-list --count --since="$(date +'%+4Y-%m-01')" --all)
 else 
-    BUILD=${CURRENT_VERSION}".${BRANCH}."$(git rev-list --no-merges --count HEAD --branches=${BRANCH})
+    BUILD=${CURRENT_VERSION}"."$(git rev-list --no-merges --count HEAD --branches=${BRANCH})"."${BRANCH}
     echo "BUILD=${BUILD}"
 fi;
 
 
 
 [[ ${BRANCH} == "main" ]] && BRANCH=""
-VERSION=$(xmllint --xpath "//strings/string[@id='version']/text()" resources/strings/strings.xml)
+VERSION=$(xmllint --xpath "//strings/string[@id='version']/text()" ${APP_STRING})
 echo "Version=${VERSION}"
 echo "GIT Build=${BUILD}"
 
@@ -54,7 +55,7 @@ echo "GIT Build=${BUILD}"
 #echo "Version Build=${OLDBUILD}"
 if [[ "${VERSION}" != "${BUILD}${SYSTEM}" ]]; then
     echo "Set version=${BUILD}${SYSTEM}"
-    echo -e "cd /strings/string[@id=\"version\"]\nset ${BUILD}${SYSTEM}\nsave" | xmllint --shell resources/strings/strings.xml
+    echo -e "cd /strings/string[@id=\"version\"]\nset ${BUILD}${SYSTEM}\nsave" | xmllint --shell ${APP_STRING}
 fi
 #xmllint --xpath "//strings/string[@id='version']/text()" resources/strings/strings.xml
 
@@ -74,7 +75,7 @@ else
     fi
 fi
 echo "Set AppName=${PROJECT_NAME} ${BUILD}"
-echo -e "cd //strings/string[@id=\"AppName\"]\nset ${PROJECT_NAME} ${BUILD}\nsave\nbye" | xmllint --shell resources/strings/strings.xml
+echo -e "cd //strings/string[@id=\"AppName\"]\nset ${PROJECT_NAME} ${BUILD}\nsave\nbye" | xmllint --shell ${APP_STRING}
 
 #echo -ne "2. APP_ID="
 #echo -e "setns iq=http://www.garmin.com/xml/connectiq\ncat //iq:manifest/iq:application/@id" | xmllint --shell manifest.xml | grep -v ">" | cut -f 2 -d "=" | tr -d \"
@@ -129,9 +130,10 @@ echo_and_exec "${SDK}"bin/monkeyc \
 # echo_and_exec "${SDK}"/bin/monkeydo "${OUTPUT_FILE}" ${DEVICE}
 echo -e "Generated ${OUTPUT_FILE}"
 
+git restore ${APP_STRING}
+
 mtp-detect | grep "Model: Edge 1050"
 echo "Status=$?"
-
 exit 0
 
 MTP="../../MTP/"
