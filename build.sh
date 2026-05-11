@@ -53,9 +53,9 @@ echo "GIT Build=${BUILD}"
 #VERSION=${VERSION}.${BUILD}
 #echo "    GIT Build=${OLDBUILD}"
 #echo "Version Build=${OLDBUILD}"
-if [[ "${VERSION}" != "${BUILD}${SYSTEM}" ]]; then
-    echo "Set version=${BUILD}${SYSTEM}"
-    echo -e "cd /strings/string[@id=\"version\"]\nset ${BUILD}${SYSTEM}\nsave" | xmllint --shell ${APP_STRING}
+if [[ "${VERSION}" != "${BUILD}" ]]; then
+    echo "Set version=${BUILD}"
+    echo -e "cd /strings/string[@id=\"version\"]\nset ${BUILD}\nsave" | xmllint --shell ${APP_STRING}
 fi
 #xmllint --xpath "//strings/string[@id='version']/text()" resources/strings/strings.xml
 
