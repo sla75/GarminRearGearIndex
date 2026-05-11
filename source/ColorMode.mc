@@ -30,7 +30,7 @@ class ColorMode {
                 :error=>Graphics.COLOR_DK_RED,
             },:night=>{
                 :background=>Graphics.COLOR_BLACK,
-                :label=>Graphics.COLOR_LT_GRAY,
+                :label=>Graphics.COLOR_WHITE,
                 :value=>Graphics.COLOR_WHITE,
                 :valueEdge=>Graphics.COLOR_RED,
                 :valueChange=>Graphics.COLOR_LT_GRAY,
@@ -39,7 +39,7 @@ class ColorMode {
         } as Dictionary<Dictionary<Symbol,Graphics.ColorValue>>;
     private const MODE_BLUE={:day=>{
                 :background=>Graphics.COLOR_BLUE,
-                :label=>Graphics.COLOR_DK_GRAY,
+                :label=>Graphics.COLOR_WHITE,
                 :value=>Graphics.COLOR_WHITE,
                 :valueEdge=>Graphics.COLOR_DK_RED,
                 :valueChange=>Graphics.COLOR_LT_GRAY,
@@ -48,7 +48,7 @@ class ColorMode {
         } as Dictionary<Dictionary<Symbol,Graphics.ColorValue>>;
     private const MODE_GREEN={:day=>{
                 :background=>Graphics.COLOR_DK_GREEN,
-                :label=>Graphics.COLOR_BLACK,
+                :label=>Graphics.COLOR_WHITE,
                 :value=>Graphics.COLOR_WHITE,
                 :valueEdge=>Graphics.COLOR_DK_RED,
                 :valueChange=>Graphics.COLOR_LT_GRAY,
@@ -57,14 +57,14 @@ class ColorMode {
         } as Dictionary<Dictionary<Symbol,Graphics.ColorValue>>;
     private const MODE_PINK={:day=>{
                 :background=>Graphics.COLOR_PINK,
-                :label=>Graphics.COLOR_DK_GRAY,
+                :label=>Graphics.COLOR_BLACK,
                 :value=>Graphics.COLOR_BLACK,
                 :valueEdge=>Graphics.COLOR_DK_RED,
                 :valueChange=>Graphics.COLOR_DK_GRAY,
                 :error=>Graphics.COLOR_LT_GRAY,
             },:night=>{
                 :background=>Graphics.COLOR_PURPLE,
-                :label=>Graphics.COLOR_LT_GRAY,
+                :label=>Graphics.COLOR_WHITE,
                 :value=>Graphics.COLOR_WHITE,
                 :valueEdge=>Graphics.COLOR_RED,
                 :valueChange=>Graphics.COLOR_LT_GRAY,
