@@ -197,7 +197,7 @@ class SlavicsGearIndexView extends SlavicsSimpleDataField {
                     dc.setColor(colorMode.getFieldColor(:label),Graphics.COLOR_TRANSPARENT);
                     dc.drawText(
                         bLocX-battIcon.getWidth(dc)-3,
-                        bLocY+(Graphics.getFontAscent(battIcon.getFont())-Graphics.getFontAscent(battFont))/2,
+                        bLocY+(Graphics.getFontHeight(battIcon.getFont())-Graphics.getFontHeight(battFont)),
                         battFont,bd.get(:name),Graphics.TEXT_JUSTIFY_RIGHT);
                     
                     bLocY-=Graphics.getFontHeight(battIcon.getFont())+3;
