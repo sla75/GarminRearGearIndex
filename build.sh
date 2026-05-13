@@ -2,14 +2,20 @@
 
 CURRENT_VERSION=1
 
-set -e # halt on error
+
 
 echo_and_exec() {
     echo "> $@"
     "$@"
 }
 
-rm -rf bin/ && echo "Deleted bin/"
+
+
+
+
+
+
+#rm -rf bin/ && echo "Deleted bin/"
 
 SDK="$(cat "${HOME}/.Garmin/ConnectIQ/current-sdk.cfg")"
 # edit the following line to point to your developer key
@@ -26,6 +32,42 @@ SYSTEM="Test"
 # Branch name
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 [[ "${BRANCH}" == "main" ]] && SYSTEM="";
+
+
+if [[ ${SYSTEM} == "Test" ]]; then
+    # Test
+
+    git status manifest.xml | grep manifest.xml
+    if [ $? -eq 0 ]; then
+        echo_and_exec git diff manifest.xml >&2
+        echo -e "\nManifest file must by edited only in branch main!" >&2
+        echo "Manualy execute: git restore manifest.xml" >&2
+        echo "exit 1" >&2
+        exit 1;
+    fi
+    
+    APP_ID=$(echo -e "setns iq=http://www.garmin.com/xml/connectiq\ncat //iq:manifest/iq:application/@id" | xmllint --shell manifest.xml | grep -v ">" | cut -f 2 -d "=" | tr -d \");
+    echo "Current Application@id=${APP_ID}"
+    APP_ID_TEST=${APP_ID::-4}"9999"
+    echo "Write Application@id=${APP_ID_TEST}"
+    echo -e "setns iq=http://www.garmin.com/xml/connectiq\ncd //iq:manifest/iq:application/@id\nset ${APP_ID_TEST}\nsave\nbye" | xmllint --shell manifest.xml | grep -v ">" 
+fi;
+
+echo "BUILD"
+
+if [[ ${SYSTEM} == "Test" ]]; then
+    echo "RESTORE manifest.xml"
+    echo_and_exec git restore manifest.xml
+fi
+
+
+
+
+
+
+
+set -e # halt on error
+exit;
 
 # Revert change on version
 #git checkout -- resources/strings/strings.xml manifest.xml
