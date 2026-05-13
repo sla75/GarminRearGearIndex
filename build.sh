@@ -94,7 +94,7 @@ JUNGLEPATHS="${PWD}/monkey.jungle"
 for device in "${devices[@]}"
 do
     echo "Device: ${device}"
-    find bin/ -type f -name "${APP_NAME}-${device^}-*.prg*" -exec rm {} \;
+    find bin/ -type f -name "${APP_NAME}-${device^}-*" -print -exec rm {} \;
     [[ -e "${PWD}/barrels.jungle" ]] && JUNGLEPATHS="${JUNGLEPATHS};${PWD}/barrels.jungle"
     echo_and_exec "${SDK}"bin/monkeyc \
         --private-key "${DEV_KEY}" --jungles "${JUNGLEPATHS}" \
@@ -102,7 +102,8 @@ do
         --warn --typecheck 1 --release
         # --debug-log-output logs/monkeyc.zip --debug-log-level 3 
     # echo_and_exec "${SDK}"/bin/monkeydo "${OUTPUT_FILE}" ${DEVICE}
-    echo -e "Generated ${OUTPUT_FILE}"
+    find bin/ -type f -name "${APP_NAME}-${device^}-*.json" -exec rm {} \;
+    echo -e "\nGenerated bin/${APP_NAME}-${device^}-${APP_VERSION}.${BRANCH}.${GITCOUNT}.prg\n"
    
 done
 
