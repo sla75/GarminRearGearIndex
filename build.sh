@@ -14,6 +14,8 @@ APP_FILE=resources/strings/app.xml
 APP_NAME=$(xmllint --xpath "//strings/string[@id='AppName']/text()" ${APP_FILE})
 APP_VERSION=$(xmllint --xpath "//strings/string[@id='version']/text()" ${APP_FILE})
 
+echo "Application name=${APP_NAME}, version=${APP_VERSION}"
+
 PROJECT_FOLDER=${PWD}
 #PROJECT_NAME=$(basename "${PROJECT_FOLDER}")
 #PROJECT_NAME="SlavicGearIndex"
@@ -64,7 +66,7 @@ fi;
 #xmllint --xpath "/strings/string[@id='version']/text()" ${APP_FILE}
 
 
-echo -e "\n****************************************\nBUILD ${APP_NAME} ${APP_VERSION}.${BRANCH/main/}.${GITCOUNT}\n----------------------------------------"
+echo -e "\n****************************************\nBUILD ${APP_NAME} ${APP_VERSION}.${BRANCH}.${GITCOUNT}\n----------------------------------------"
 
 
 echo -e "########################################\n"
