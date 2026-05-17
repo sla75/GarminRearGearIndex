@@ -74,7 +74,7 @@ fi;
 
 echo -e "\n****************************************\nBUILD ${APP_NAME} ${APP_VERSION}.${BRANCH}.${GITCOUNT}\n----------------------------------------"
 
-if [[ -z ${SYSTEM} ]]; then
+#if [[ -z ${SYSTEM} ]]; then
     find bin/ -type f -name "${APP_NAME}-*.iq" -exec rm {} \;
     echo -e "\nGenerate ${APP_NAME}-${GITCOUNT}..."
     echo_and_exec java -Xms1g -"Dfile.encoding=UTF-8" -"Dapple.awt.UIElement=true"    \
@@ -84,7 +84,7 @@ if [[ -z ${SYSTEM} ]]; then
         --private-key ${DEV_KEY}    \
         --package-app --release --warn
     echo -e "Generated bin/${APP_NAME}-${GITCOUNT}.iq"
-fi;
+#fi;
 
 declare -a devices=("edge840" "edge1050")
 

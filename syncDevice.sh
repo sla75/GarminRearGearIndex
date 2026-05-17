@@ -22,6 +22,7 @@ TEMP="temp~"
 reg_bmp='\s*([0-9]{1,})\s([0-9]{4}-.{14}\.BMP)'
 IFS=$'\n'
 for bmps in $(mtp-filetree | grep -oP $reg_bmp); do
+    # Move screenshots
     if [[ ${bmps} =~ ${reg_bmp} ]]; then
         num="${BASH_REMATCH[1]}"
         file="${BASH_REMATCH[2]}"

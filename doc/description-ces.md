@@ -44,7 +44,7 @@ This cover image will be displayed on your Connect IQ Store listing on the Web a
 Cover Image (Web/Mobile)
 (500 x 500)
 
-<img src="./cover.png" width="250" height="250" title="Cover image">
+<img src="./cover.jpeg" width="250" height="250" title="Cover image">
 
 # Screen Images
 Screen images will be displayed on your app’s detail page in the Connect IQ Store. Image must be a JPG, GIF or PNG less than 150 KB.
