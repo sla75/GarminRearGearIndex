@@ -48,9 +48,11 @@ class BatteryIcon extends Drawable {
     public function getWidth(dc as Dc) as Number{
         return dc.getTextWidthInPixels(BATCHAR.get(status),fontBattery);
     }
-    public function compute(status as AntPlus.BatteryStatusValue,charge as Boolean) {
-        self.charge=charge;
+    public function setStatus(status as AntPlus.BatteryStatusValue) {
         self.status=status;
+    }
+    public function setCharge(charge as Boolean) {
+        self.charge=charge;
     }
     public function setNightMode(night as Boolean) as Void{
         self.night=night;

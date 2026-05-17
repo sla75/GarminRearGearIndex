@@ -23,10 +23,10 @@ class ColorMode {
 
     private const MODE_BLACKANDWHITE={:day=>{
                 :background=>Graphics.COLOR_WHITE,
-                :label=>Graphics.COLOR_BLACK,
-                :value=>Graphics.COLOR_BLACK,
+                :label=>0x313152,
+                :value=>0x313152,
                 :valueEdge=>Graphics.COLOR_DK_RED,
-                :valueChange=>Graphics.COLOR_DK_GRAY,
+                :valueChange=>Graphics.COLOR_LT_GRAY,
                 :error=>Graphics.COLOR_DK_RED,
             },:night=>{
                 :background=>Graphics.COLOR_BLACK,

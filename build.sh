@@ -31,6 +31,9 @@ SYSTEM="Test"
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 [[ "${BRANCH}" == "main" ]] && SYSTEM="";
 
+APP_NAME=${APP_NAME}${SYSTEM}
+
+echo "Branch ${BRANCH} ${SYSTEM}"
 
 if [[ ${SYSTEM} == "Test" ]]; then
     # Test
@@ -52,8 +55,8 @@ if [[ ${SYSTEM} == "Test" ]]; then
     #GITCOUNT=$(git rev-list --count --first-parent main..${BRANCH})
     GITCOUNT=$(git rev-list --count main..${BRANCH})
 
-    echo "Set AppName=${APP_NAME} ${SYSTEM}.${BRANCH}.${GITCOUNT}"
-    echo -e "cd /strings/string[@id=\"AppName\"]\nset ${APP_NAME} ${SYSTEM}.${BRANCH}.${GITCOUNT}\nsave" | xmllint --shell ${APP_FILE} | grep -v ">"
+    echo "Set AppName=${APP_NAME} ${BRANCH}.${GITCOUNT}"
+    echo -e "cd /strings/string[@id=\"AppName\"]\nset ${APP_NAME} ${APP_VERSION}.${BRANCH}.${GITCOUNT}\nsave" | xmllint --shell ${APP_FILE} | grep -v ">"
     echo "Set version=${APP_VERSION}.${BRANCH}.${GITCOUNT}"
     echo -e "cd /strings/string[@id=\"version\"]\nset ${APP_VERSION}.${BRANCH}.${GITCOUNT}\nsave" | xmllint --shell ${APP_FILE} | grep -v ">"
 else
@@ -108,6 +111,9 @@ do
 done
 
 echo -e "########################################\n"
+
+xmllint --xpath "//strings/string[@id='AppName']/text()" ${APP_FILE}
+xmllint --xpath "//strings/string[@id='version']/text()" ${APP_FILE}
 
 #if [[ ${SYSTEM} == "Test" ]]; then
     echo "RESTORE Application@id=${APP_ID} in manifest.xml and ${APP_FILE}"

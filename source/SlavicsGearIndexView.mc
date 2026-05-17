@@ -42,9 +42,9 @@ class SlavicsGearIndexView extends SlavicsSimpleDataField {
         System.println("SlavicsGearIndexView.initialize()");
         SlavicsSimpleDataField.initialize();
         unitTeeths=Application.loadResource(Rez.Strings.unitTeeths);
-        var pos=Application.loadResource(Rez.Strings.version).find("Test") as Number or Null;
+        var pos=Application.loadResource(Rez.Strings.AppName).find("Test") as Number or Null;
         if(pos!=null){
-            versionTest=Application.loadResource(Rez.Strings.version).toString().substring(0, pos);
+            versionTest=Application.loadResource(Rez.Strings.version);
         }
         self.setTextLabel(Application.loadResource(Rez.Strings.label));
         Properties.setValue("property_version",Application.loadResource(Rez.Strings.version));
@@ -175,7 +175,7 @@ class SlavicsGearIndexView extends SlavicsSimpleDataField {
 
                     battIcon.locX=bLocX;
                     battIcon.locY=bLocY;
-                    battIcon.compute(bd.get(:batteryStatus),System.getClockTime().min%2==0);
+                    battIcon.setStatus(bd.get(:batteryStatus));
                     battIcon.draw(dc);
 
                     dc.setColor(colorMode.getFieldColor(:label),Graphics.COLOR_TRANSPARENT);
